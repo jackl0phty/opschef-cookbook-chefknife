@@ -1,0 +1,5 @@
+# This fils is managed by Chef. Local changes will be overridden!
+# Contains a list of knife configs for all Chef servers. Double tilda delimited ( e.g. ~~ ).
+<% @knife_configs.uniq.each do |cfgs| -%>  
+knife_config~~<%= cfgs %>
+<% end -%>

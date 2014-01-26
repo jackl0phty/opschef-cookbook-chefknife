@@ -1,0 +1,283 @@
+#!/usr/bin/env ruby
+
+# Include required libraries.
+require 'optparse'
+
+# Declare variables.
+chef_knife_config = '/etc/chef/chefknife'
+chef_repo = Dir.pwd
+chef_repo_environments = "#{chef_repo}/environments"
+chef_repo_roles = "#{chef_repo}/roles"
+chef_repo_cookbooks = "#{chef_repo}/cookbooks"
+chef_repo_data_bags = "#{chef_repo}/data_bags"
+
+options = {}
+
+opt_parser = OptionParser.new do |opt|
+  opt.banner = "Usage: chefknife COMMAND [OPTIONS]"
+  opt.separator  ""
+  opt.separator  "Commands"
+  opt.separator  "     environments: Upload ALL Chef environments to ALL Chef servers!"
+  opt.separator  "     environment: Upload single Chef environment to ALL Chef servers."
+  opt.separator  "     roles: Upload ALL Chef roles to ALL Chef servers!"
+  opt.separator  "     role: Upload single role to ALL Chef servers."
+  opt.separator  "     data_bags: Upload ALL Chef data bags to ALL Chef servers!"
+  opt.separator  "     data_bag: Upload single data bag to ALL Chef servers."
+  opt.separator  "     cookbooks: Upload ALL Chef cookbooks to ALL Chef servers!"
+  opt.separator  "     cookbook: Upload single cookbook to ALL Chef servers."
+  opt.separator  "     create: Create empty data bags."
+  opt.separator  ""
+  opt.separator  "Options"
+
+  opt.on("-h","--help","help") do
+    puts opt_parser
+  end
+end
+
+opt_parser.parse!
+
+case ARGV[0]
+when "environments"
+
+  puts "Uploading ALL environments to ALL Chef server..."
+
+  # Declare array.
+  knife_configs = []
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single environment to ALL Chef servers.
+  for config in knife_configs
+  
+    # Uncomment lines below to debug.
+    #puts "Knife configs: #{config}"
+
+    # Get list of Chef environments.
+    Dir.chdir("#{chef_repo_environments}")
+    Dir.glob("*.{json,js,rb}") do |f|
+      #puts "Chef environment: #{f}"
+      #Upload ALL environmentS to ALL Chef servers.
+      system("knife environment from file #{f} -c #{config}")
+    end
+
+  end
+
+  # Get list of Chef environments.
+  Dir.chdir("#{chef_repo_environments}")
+  Dir.glob("*.{json,js,rb}") do |f|
+    #puts "Chef environment: #{f}"
+    system("knife environment from file #{f}") 
+  end
+
+when "environment"
+puts "Uploading environment #{ARGV[1]} to ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single environment to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Environment name: #{ARGV[1]}"
+    #puts "Knife configs: #{config}"
+
+    # Upload single environment to ALL Chef servers.
+    system("knife environment from file #{chef_repo_environments}/#{ARGV[1]} -c #{config}")
+
+  end
+
+when "role"
+
+ puts "Uploading role #{ARGV[1]} to ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single role to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Role name is: #{ARGV[1]}"
+    #puts "Knife configs: #{config}"   
+
+    # Upload single role to ALL Chef servers.
+    system("knife role from file #{chef_repo_roles}/#{ARGV[1]} -c #{config}")
+
+  end
+
+when "roles"
+
+  puts "Uploading ALL roleS to ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+  
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single role to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Knife configs: #{config}"
+
+    # Get list of Chef roles.
+    Dir.chdir("#{chef_repo_roles}")
+    Dir.glob("*.{json,js,rb}") do |f|
+      #puts "Chef role: #{f}"
+      system("knife role from file #{f} -c #{config}")
+    end
+
+  end
+
+when "cookbooks"
+
+  puts "Uploading ALL cookbooks to ALL Chef servers..."
+ 
+   # Declare array.
+  knife_configs = []
+ 
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload ALL cookbooks to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Knife configs: #{config}"
+
+    # Get list of OpsChef cookbooks.
+    Dir.chdir("#{chef_repo_cookbooks}")
+    Dir.glob("*") do |f|
+      #puts "Chef cookbook: #{f}"
+      system("knife cookbook upload #{f} -c #{config}")
+    end
+  
+  end
+
+when "cookbook"
+
+  puts "Uploading cookbook #{ARGV[1]} to ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+  
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single cookbook to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Cookbook name is: #{ARGV[1]}"
+    #puts "Knife configs: #{config}"
+
+    # Upload cookbook to ALL Chef servers.
+    system("knife cookbook upload #{ARGV[1]} -c #{config}")
+ 
+  end
+
+when "data_bags"
+  puts "Uploading ALL data bags to ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload ALL data bags to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment line below to debug.
+    #puts "Knife configs: #{config}"
+
+    # Get recursive list of data bag items.
+    Dir.chdir("#{chef_repo_data_bags}")
+    # Valid items are .json, .js. & .rb.
+    data_bags = File.join("**","*.{json,js,rb}")
+
+    Dir.glob(data_bags) do |item|
+
+    # Get data bag item.
+    #data_bag_item = "#{item}"
+    #puts "data bag item: #{data_bag_item}"
+
+    data_bag = "#{item}"
+    db_name = data_bag.sub /\/[a..z][0..9].json$/, ''
+    db_name = data_bag.split("/").first
+
+    #puts "data_bag var = #{data_bag}"
+    #puts "data bag = #{db_name}"
+    puts "knife data bag from file #{db_name} #{chef_repo_data_bags}/#{item} -c #{config}"
+
+  end
+
+ end
+
+when "data_bag"
+
+  puts "Uploading data bag #{ARGV[1]} to ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single data bag to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Data bag name is: #{ARGV[1]}"
+    #puts "Knife configs: #{config}"
+
+    # Upload single data bag to ALL Chef servers.
+    system("knife data bag from file #{ARGV[1]} #{chef_repo_data_bags}/#{ARGV[1]} -c #{config}")
+
+  end
+
+when "create"
+
+  # Are we creating empty data bags?
+  if "#{ARGV[1]}" =~ 'data_bag'
+    
+    
+  end
+
+
+else
+  puts opt_parser
+end

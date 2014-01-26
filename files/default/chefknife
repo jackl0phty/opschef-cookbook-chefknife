@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+# Declare variables.
+chef_repo = '/home/gerald/projects/github/jackl0phtyorg'
+chef_environments = "#{chef_repo}/environments"
+chef_roles = "#{chef_repo}/roles"
+#chef_data_bags = "#{chef_repo}/data_bags"
+options = {}
+
+opt_parser = OptionParser.new do |opt|
+  opt.banner = "Usage: opt_parser COMMAND [OPTIONS]"
+  opt.separator  ""
+  opt.separator  "Commands"
+  opt.separator  "     environment: Upload ALL Chef environments!"
+  opt.separator  "     role: Upload ALL Chef roles"
+  opt.separator  "     data_bag: Upload ALL Chef data bags!"
+  opt.separator  ""
+  opt.separator  "Options"
+
+  opt.on("-e","--environment ENVIRONMENT","which environment you want server run") do |environment|
+    options[:environment] = environment
+  end
+
+  opt.on("-d","--daemon","runing on daemon mode?") do
+    options[:daemon] = true
+  end
+
+  opt.on("-h","--help","help") do
+    puts opt_parser
+  end
+end
+
+opt_parser.parse!
+
+case ARGV[0]
+  when "environment"
+    puts "Uploading ALL environments to Chef server..."
+    # Get list of Chef environments.
+    # puts Dir["#{chef_environments}/*"]
+    d = Dir["#{chef_environments}/*"]
+    d.each {|f|  system("knife environment from file #{f}")}
+  when "role"
+    puts "Uploading ALL roles to Chef server..."
+    # Get list of Chef roles.
+    # puts Dir["#{chef_roles}/*"]
+    d = Dir["#{chef_roles}/*"]
+    d.each {|f|  system("knife role from file #{f}")}
+  when "data_bags"
+    puts "Upload ALL data bags to Chef server...}"
+  else
+    puts opt_parser
+end
