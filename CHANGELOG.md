@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.6
+-----
+- Fix chefknife data_bag to upload single data bag item.
+
 0.1.0
 -----
 - [your_name] - Initial release of chefknife
