@@ -246,7 +246,7 @@ when "data_bags"
 
 when "data_bag"
 
-  puts "Uploading data bag item #{ARGV[1]}/#{ARG[2]} to ALL Chef servers..."
+  puts "Uploading data bag item #{ARGV[1]}/#{ARGV[2]} to ALL Chef servers..."
 
   # Declare array.
   knife_configs = []
@@ -265,7 +265,7 @@ when "data_bag"
     #puts "Knife configs: #{config}"
 
     # Upload single data bag to ALL Chef servers.
-    system("knife data bag from file #{ARGV[1]} #{ARVG[2]} -c #{config}")
+    system("knife data bag from file #{ARGV[1]} #{ARGV[2]} -c #{config}")
 
   end
 
