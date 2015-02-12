@@ -28,7 +28,7 @@ template "/etc/chef/chefknife" do
   source "chefknife_config.erb" 
   mode 0644
   owner node.default['chefknife']['chefknife_config_user']
-  group nodedefault['chefknife']['chefknife_config_group']
+  group node.default['chefknife']['chefknife_config_group']
   variables(
     :chef_servers	=> node['chefknife']['chef_servers'],
     :knife_configs	=> node['chefknife']['knife_configs']

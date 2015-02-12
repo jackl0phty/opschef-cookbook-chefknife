@@ -3,6 +3,9 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.10
+- Fix syntax error in default.rb.
+
 0.1.9
 - Update default.rb.
 
