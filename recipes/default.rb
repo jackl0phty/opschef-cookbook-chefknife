@@ -9,7 +9,7 @@
 template "/usr/local/bin/chefknife" do
   source "chefknife.erb"
   mode 0755
-  owner {default['chefknife']['chefknife_binary_user']
+  owner default['chefknife']['chefknife_binary_user']
   group default['chefknife']['chefknife_binary_group'] 
 end
 
