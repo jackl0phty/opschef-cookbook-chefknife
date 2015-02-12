@@ -24,14 +24,14 @@ default['chefknife']['knife_configs'] = []
 # User/group ownership of /usr/local/bin/chefknife.
 node.default['chefknife']['chefknife_binary_user'] = 'root'
 # You MUST OVERRIDE this if you're on OSX. Might want to use the wheel group.
-node.default['chefknife']['chefknife_binary_group'] = 'root'
+default['chefknife']['chefknife_binary_group'] = 'root'
 
 # User/group ownership of directory /etc/chef.
-node.default['chefknife']['chefknife_config_dir_user'] = 'root'
+default['chefknife']['chefknife_config_dir_user'] = 'root'
 # You MUST OVERRIDE this if you're on OSX. Might want to use the wheel group.
-node.default['chefknife']['chefknife_config_dir_group'] = 'root'
+default['chefknife']['chefknife_config_dir_group'] = 'root'
 
 # User/group ownership of config /etc/chef/chefknife
-node.default['chefknife']['chefknife_config_user'] = 'root'
+default['chefknife']['chefknife_config_user'] = 'root'
 # You MUST OVERRIDE this if you're on OSX. Might want to use the wheel group.
-node.default['chefknife']['chefknife_config_group'] = 'root'
+default['chefknife']['chefknife_config_group'] = 'root'
