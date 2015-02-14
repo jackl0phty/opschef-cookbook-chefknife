@@ -3,6 +3,14 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.15
+------
+- Remove metadata.json.
+
+0.1.14
+------
+- Add OSX support.
+
 0.1.13
 ------
 - Fix chefknife template syntax error.
