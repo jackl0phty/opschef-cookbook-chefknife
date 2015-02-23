@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.17
+-----
+- Update Travis-CI support.
+
 0.1.16
 ------
 - Fix .kitchen.yml so test-kitchen will work.
