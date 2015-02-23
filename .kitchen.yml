@@ -24,4 +24,15 @@ platforms:
 suites:
 - name: default
   run_list: ["recipe[chefknife]"]
-  attributes: {}
+  attributes:
+    chefknife:
+      chefknife_binary_user: "root"
+      chefknife_binary_group: "root"
+      chefknife_config_user: "root"
+      chefknife_config_group: "root" 
+      chef_servers:
+        - http://chef01.example.org
+        - http://chef02.exammple.org
+      knife_configs:
+        - /etc/chef/chef01.rb
+        - /etc/chef/chef02.rb

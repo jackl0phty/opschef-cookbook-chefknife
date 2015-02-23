@@ -22,7 +22,7 @@ default['chefknife']['chefknife_config'] = '/etc/chef/chefknife'
 default['chefknife']['knife_configs'] = [] 
 
 # User/group ownership of /usr/local/bin/chefknife.
-node.default['chefknife']['chefknife_binary_user'] = 'root'
+default['chefknife']['chefknife_binary_user'] = 'root'
 
 # User/group ownership of directory /etc/chef.
 default['chefknife']['chefknife_config_dir_user'] = 'root'
