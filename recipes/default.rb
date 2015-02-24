@@ -30,7 +30,6 @@ template "/etc/chef/chefknife" do
   owner node['chefknife']['chefknife_config_user']
   group node['chefknife']['chefknife_config_group']
   variables(
-    :chef_servers	=> node['chefknife']['chef_servers'],
     :knife_configs	=> node['chefknife']['knife_configs']
   )
 end

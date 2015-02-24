@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.18
+------
+- Fix foodcritic by removing unused template variable from chefknife::default.
+
 0.1.17
 -----
 - Update Travis-CI support.
