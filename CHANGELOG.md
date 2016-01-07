@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.21
+------
+_ Update travis to use Ruby 2.3.0.
+
 0.1.20
 ------
 - Add ability to print out version of chefknife; which matches cookbook version.
