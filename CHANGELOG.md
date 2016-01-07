@@ -3,6 +3,11 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.20
+------
+- Add ability to print out version of chefknife; which matches cookbook version.
+  Add logic to create initial data bag object for all data bags.
+
 0.1.19
 ------
 - Add Travis-CI button to README.md.

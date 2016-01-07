@@ -10,6 +10,7 @@ chef_repo_environments = "#{chef_repo}/environments"
 chef_repo_roles = "#{chef_repo}/roles"
 chef_repo_cookbooks = "#{chef_repo}/cookbooks"
 chef_repo_data_bags = "#{chef_repo}/data_bags"
+chefknife_version = '0.1.19'
 
 options = {}
 
@@ -25,7 +26,8 @@ opt_parser = OptionParser.new do |opt|
   opt.separator  "     data_bag: Upload single data bag to ALL Chef servers."
   opt.separator  "     cookbooks: Upload ALL Chef cookbooks to ALL Chef servers!"
   opt.separator  "     cookbook: Upload single cookbook to ALL Chef servers."
-  opt.separator  "     create: Create empty data bags."
+  opt.separator  "     create_bags: Create data bag object for ALL data bags!"
+  opt.separator  "     version: Print verison of chefknife."
   opt.separator  ""
   opt.separator  "Options"
 
@@ -269,14 +271,28 @@ when "data_bag"
 
   end
 
-when "create"
+when "version"
 
-  # Are we creating empty data bags?
-  if "#{ARGV[1]}" =~ 'data_bag'
-    
-    
+  # Print version of chefknife. Same as cookbook version.
+  puts "chefknife version #{chefknife_version}"
+
+
+when "create_bags"
+
+  # Create initial data bag object for ALL data bags
+  # in chef-hosted/data_bags. Useful for ErChef upgrades
+  # or deploying a new ErChef server.
+  
+  # Get list of data bags.
+  Dir.chdir("#{chef_repo_data_bags}")
+  Dir.glob("*") do |dbag|
+
+    puts "Creating Data bag #{dbag} ..."
+
+    # Create initial data bag object for ALL data bags.
+    system("knife data bag create #{dbag} --server-url #{ARGV[1]}")
+
   end
-
 
 else
   puts opt_parser
