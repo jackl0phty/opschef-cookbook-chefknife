@@ -23,6 +23,7 @@ opt_parser = OptionParser.new do |opt|
   opt.separator  "     roles: Upload ALL Chef roles to ALL Chef servers!"
   opt.separator  "     role: Upload single role to ALL Chef servers."
   opt.separator  "     data_bags: Upload ALL Chef data bags to ALL Chef servers!"
+  opt.separator  "     data_bags_chef_server: Upload ALL Chef data bags to single Chef server."
   opt.separator  "     data_bag: Upload single data bag to ALL Chef servers."
   opt.separator  "     cookbooks: Upload ALL Chef cookbooks to ALL Chef servers!"
   opt.separator  "     cookbook: Upload single cookbook to ALL Chef servers."
@@ -96,6 +97,30 @@ puts "Uploading environment #{ARGV[1]} to ALL Chef servers..."
 
     # Upload single environment to ALL Chef servers.
     system("knife environment from file #{chef_repo_environments}/#{ARGV[1]} -c #{config}")
+
+  end
+
+when "show"
+puts "Cookbook versions for cookbook #{ARGV[1]}."
+
+  # Declare array.
+  knife_configs = []
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & print version of single cookbook on ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "cookbook name: #{ARGV[1]}"
+    #puts "Knife configs: #{config}"
+
+    # Upload single environment to ALL Chef servers.
+    system("knife cookbook show #{ARGV[1]} -c #{config} |awk '{ print $2 }'")
 
   end
 
@@ -245,6 +270,31 @@ when "data_bags"
   end
 
  end
+
+when "data_bags_chef_server"
+  puts "Uploading ALL data bag items to single Chef server..."
+
+    # Get recursive list of data bag items.
+    Dir.chdir("#{chef_repo_data_bags}")
+    # Valid items are .json, .js. & .rb.
+    data_bags = File.join("**","*.{json,js,rb}")
+
+    Dir.glob(data_bags) do |item|
+
+    # Get data bag item.
+    data_bag_item = "#{item}"
+    #puts "data bag item: #{data_bag_item}"
+
+    data_bag = "#{item}"
+    db_name = data_bag.sub /\/[a..z][0..9].json$/, ''
+    db_name = data_bag.split("/").first
+
+    #puts "data_bag var = #{data_bag}"
+    #puts "data bag = #{db_name}"
+    #puts "knife data bag from file #{db_name} #{chef_repo_data_bags}/#{item}"
+    system("knife data bag from file #{db_name} #{chef_repo_data_bags}/#{item}")
+  
+end
 
 when "data_bag"
 

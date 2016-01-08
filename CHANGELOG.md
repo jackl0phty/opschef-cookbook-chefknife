@@ -3,6 +3,11 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.22
+------
+- Added case data_bags_chef_server.
+  Uploads All data bags to a single Chef server.
+
 0.1.21
 ------
 _ Update travis to use Ruby 2.3.0.
