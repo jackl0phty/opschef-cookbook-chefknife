@@ -10,7 +10,7 @@ chef_repo_environments = "#{chef_repo}/environments"
 chef_repo_roles = "#{chef_repo}/roles"
 chef_repo_cookbooks = "#{chef_repo}/cookbooks"
 chef_repo_data_bags = "#{chef_repo}/data_bags"
-chefknife_version = '0.1.19'
+chefknife_version = '0.1.23'
 
 options = {}
 
@@ -27,6 +27,7 @@ opt_parser = OptionParser.new do |opt|
   opt.separator  "     data_bag: Upload single data bag to ALL Chef servers."
   opt.separator  "     cookbooks: Upload ALL Chef cookbooks to ALL Chef servers!"
   opt.separator  "     cookbook: Upload single cookbook to ALL Chef servers."
+  opt.separator  "     dump_nodes: Dump ALL nodes from single Chef server as .json.
   opt.separator  "     create_bags: Create data bag object for ALL data bags!"
   opt.separator  "     version: Print verison of chefknife."
   opt.separator  ""
@@ -326,6 +327,29 @@ when "version"
   # Print version of chefknife. Same as cookbook version.
   puts "chefknife version #{chefknife_version}"
 
+when "dump_nodes"
+
+  # Dump ALL nodes from a single Chef server.
+  puts "Dumping ALL Chef nodes to #{ARGV[2]}..."
+
+  # Declare array to save nodes.
+  nodes = []
+
+    # Save list of nodes to array.
+    nodes = `knife node list`.split
+
+    # Loop each node and dump definition.
+    for node in nodes
+
+      # Uncomment to debug.
+      # puts "Node name: #{node}"
+
+      if "#{ARGV[1]}" == 'json'
+        # Dump definition of each node via knife.
+        system("knife node show #{node} -Fj > #{ARGV[2]}/#{node}.json")
+      end
+
+    end
 
 when "create_bags"
 

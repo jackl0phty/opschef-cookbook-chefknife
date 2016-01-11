@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.23
+------
+_ Added case dump_nodes. Dumps ALL nodes from single Chef server as .json.
+
 0.1.22
 ------
 - Added case data_bags_chef_server.
