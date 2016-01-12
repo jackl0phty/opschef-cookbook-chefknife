@@ -10,7 +10,7 @@ chef_repo_environments = "#{chef_repo}/environments"
 chef_repo_roles = "#{chef_repo}/roles"
 chef_repo_cookbooks = "#{chef_repo}/cookbooks"
 chef_repo_data_bags = "#{chef_repo}/data_bags"
-chefknife_version = '0.1.23'
+chefknife_version = '0.1.24'
 
 options = {}
 
@@ -27,7 +27,7 @@ opt_parser = OptionParser.new do |opt|
   opt.separator  "     data_bag: Upload single data bag to ALL Chef servers."
   opt.separator  "     cookbooks: Upload ALL Chef cookbooks to ALL Chef servers!"
   opt.separator  "     cookbook: Upload single cookbook to ALL Chef servers."
-  opt.separator  "     dump_nodes: Dump ALL nodes from single Chef server as .json.
+  opt.separator  "     dump_nodes: Dump ALL nodes from single Chef server as .json."
   opt.separator  "     create_bags: Create data bag object for ALL data bags!"
   opt.separator  "     version: Print verison of chefknife."
   opt.separator  ""
