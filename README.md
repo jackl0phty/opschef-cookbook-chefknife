@@ -31,17 +31,21 @@ Usage
 You can execute chefknife, chefknife -h, or chefknife --help to get the help menu:
 <pre><code>
 jenkins@jenkins.example.com: ~/chef-hosted: chefknife 
-Usage: opt_parser COMMAND [OPTIONS]
+Usage: chefknife COMMAND [OPTIONS]
 
 Commands
      environments: Upload ALL Chef environments to ALL Chef servers!
-     environment: Upload single Chef environment to ALL Chef servers
+     environment: Upload single Chef environment to ALL Chef servers.
      roles: Upload ALL Chef roles to ALL Chef servers!
-     role: Upload single role to ALL Chef servers
+     role: Upload single role to ALL Chef servers.
      data_bags: Upload ALL Chef data bags to ALL Chef servers!
-     data_bag: Upload single data bag to ALL Chef servers
+     data_bags_chef_server: Upload ALL Chef data bags to single Chef server.
+     data_bag: Upload single data bag to ALL Chef servers.
      cookbooks: Upload ALL Chef cookbooks to ALL Chef servers!
-     cookbook: Upload single cookbook to ALL Chef servers
+     cookbook: Upload single cookbook to ALL Chef servers.
+     dump_nodes: Dump ALL nodes from single Chef server as .json.
+     create_bags: Create data bag object for ALL data bags!
+     version: Print verison of chefknife.
 
 Options
     -h, --help                       help
