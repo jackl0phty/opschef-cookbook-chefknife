@@ -143,8 +143,8 @@ You can install chefknife by including chefknife in your node's run_list:
 Below is a sample chefknife config.
 <pre><code>
 skywalker@alderaan: ~: cat /etc/chef/chefknife 
-knife_config~~/etc/chef/chef01-knife.rb
-knife_config~~/etc/chef/chef02-knife.rb
+knife_config\~~/etc/chef/chef01-knife.rb
+knife_config\~~/etc/chef/chef02-knife.rb
 </pre></code>
 
 DEFAULT BEHAVIOR
