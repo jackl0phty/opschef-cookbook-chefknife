@@ -3,7 +3,12 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.25
+------
+- Update README.md.
+
 0.1.24
+------
 - Fix typo in chefknife.erb.
 
 0.1.23

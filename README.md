@@ -81,6 +81,41 @@ The following chefknife cmd can be used to upload a single cookbook to ALL Chef 
 jenkins@jenkins.example.com: ~/chef-hosted: chefknife cookbook apache2
 </pre></code>
 
+The following chefknife cmd can be used to upload ALL data
+bags to ALL Chef servers!:
+<pre><code>
+jenkins@jenkins.example.com: ~/chef-hosted: chefknife
+data_bags
+</pre></code>
+
+The following chefknife cmd can be used to upload a single
+data bag named foo to ALL Chef servers:
+<pre><code>
+jenkins@jenkins.example.com: ~/chef-hosted: chefknife
+data_bag foo
+</pre></code>
+
+The following chefknife cmds can be used to upload ALL data
+bags to a single Chef server:
+
+First create empty data bag objects for each of your data bags. Substitute default for the actual name of your org if you created one.
+<pre><code>
+jenkins@jenkins.example.com: ~/chef-hosted: chefknife
+create_bags https://chef01.example.com/organizations/default
+</pre></code>
+
+Now upload ALL data bags to a single Chef server:
+<pre><code>
+jenkins@jenkins.example.com: ~/chef-hosted: chefknife
+data_bags_chef_server 
+</pre></code>
+
+The following chefknife cmds can be used to dump ALL nodes
+from a single Chef server:
+<pre><code>
+jenkins@jenkins.example.com: ~/chef-hosted: chefknife dump_nodes json /tmp/nodes
+</pre></code>
+
 You should override the default['chefknife']['knife_configs'] = [] attribute with a list of knife configs for all your chef servers,
 including [Enterprise Chef](http://www.opscode.com/enterprise-chef/) if you're using it.
 
