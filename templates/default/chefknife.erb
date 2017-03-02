@@ -10,7 +10,7 @@ chef_repo_environments = "#{chef_repo}/environments"
 chef_repo_roles = "#{chef_repo}/roles"
 chef_repo_cookbooks = "#{chef_repo}/cookbooks"
 chef_repo_data_bags = "#{chef_repo}/data_bags"
-chefknife_version = '0.1.24'
+chefknife_version = '0.1.25'
 
 options = {}
 
@@ -102,10 +102,11 @@ puts "Uploading environment #{ARGV[1]} to ALL Chef servers..."
   end
 
 when "show"
-puts "Cookbook versions for cookbook #{ARGV[1]}."
+puts "Cookbook versions for #{ARGV[1]}."
 
   # Declare array.
   knife_configs = []
+  version = ''
 
   # Read chefknife config & get knife.rb list.
   knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
@@ -120,8 +121,11 @@ puts "Cookbook versions for cookbook #{ARGV[1]}."
     #puts "cookbook name: #{ARGV[1]}"
     #puts "Knife configs: #{config}"
 
-    # Upload single environment to ALL Chef servers.
-    system("knife cookbook show #{ARGV[1]} -c #{config} |awk '{ print $2 }'")
+    # Show version of single cookbook on ALL Chef servers.
+    version = `knife cookbook show #{ARGV[1]} -c #{config} |awk '{ print $2 }'`
+
+    # Print cookbook version.
+    puts "Knife Config: #{config}\t\t\tVersion: #{version} "
 
   end
 
