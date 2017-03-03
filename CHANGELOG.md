@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.28
+------
+- Update chefknife show $cookbook to show latest community cookbook version.
+
 0.1.25
 ------
 - Update README.md.

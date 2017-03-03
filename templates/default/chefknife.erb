@@ -2,6 +2,8 @@
 
 # Include required libraries.
 require 'optparse'
+require 'faraday'
+require 'faraday_middleware'
 
 # Declare variables.
 chef_knife_config = '/etc/chef/chefknife'
@@ -125,9 +127,36 @@ puts "Cookbook versions for #{ARGV[1]}."
     version = `knife cookbook show #{ARGV[1]} -c #{config} |awk '{ print $2 }'`
 
     # Print cookbook version.
-    puts "Knife Config: #{config}\t\t\tVersion: #{version} "
+    knife_config = "#{config}"
+    knife_config = knife_config.split('/')[4]
+    puts "Knife Config: #{knife_config}\t\t\tVersion: #{version}"
 
   end
+
+  # Build URL.
+  base_url = 'https://supermarket.chef.io/api/'
+  api_version = 'v1'
+  url = "#{base_url}/#{api_version}/cookbooks/#{ARGV[1]}"
+
+  # Setup HTTPS connection to Chef's Supermarket API.
+  conn = Faraday.new(:url => "#{url}") do |faraday|
+    faraday.request  :url_encoded             # form-encode POST params
+    faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    faraday.response :json, :content_type => /\bjson$/
+  end
+
+  # Make HTTPS GET request against API.
+  response = conn.get "#{url}"
+  #response.body
+
+  # Save cookbook name stats from header response.
+  cookbook = response.body
+  version = cookbook['latest_version'].to_s
+  version = version.split('/')[8]
+
+  # Print out basic character facts.
+  #puts "Latest Community Version: " + cookbook['latest_version'].to_s
+  puts "Latest Community Version: " + "#{version}"
 
 when "role"
 
