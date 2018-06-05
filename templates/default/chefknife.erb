@@ -4,6 +4,8 @@
 require 'optparse'
 require 'faraday'
 require 'faraday_middleware'
+require 'open3'
+require 'colorize'
 
 # Declare variables.
 chef_knife_config = '/etc/chef/chefknife'
@@ -31,6 +33,7 @@ opt_parser = OptionParser.new do |opt|
   opt.separator  "     cookbook: Upload single cookbook to ALL Chef servers."
   opt.separator  "     dump_nodes: Dump ALL nodes from single Chef server as .json."
   opt.separator  "     create_bags: Create data bag object for ALL data bags!"
+  opt.separator  "     compare: Compares cookbooks version from ALL Chef servers."
   opt.separator  "     version: Print verison of chefknife."
   opt.separator  ""
   opt.separator  "Options"
@@ -400,6 +403,62 @@ when "create_bags"
     system("knife data bag create #{dbag} --server-url #{ARGV[1]}")
 
   end
+
+when "compareckbk"
+
+  puts "Auditing Chef cookbook #{ARGV[1]} on ALL Chef servers..."
+
+  # Declare array.
+  knife_configs = []
+  cookbook_location_cmd = ""
+
+  # Read chefknife config & get knife.rb list.
+  knife_configs = File.open("#{chef_knife_config}").drop(2).map.each do |line|
+    line.chomp!
+    line.split('~~')[1]
+  end
+
+  # Loop array & Upload single data bag to ALL Chef servers.
+  for config in knife_configs
+
+    # Uncomment lines below to debug.
+    #puts "Cookbook name is: #{ARGV[1]}"
+    #puts "Knife configs: #{config}"
+
+    # Print cookbook location from Berkshelf.
+    cookbook_location = `grep #{ARGV[1]} #{chef_repo}/Berksfile |awk '{ print $4 }'`
+    cookbook_version = `knife cookbook show #{ARGV[1]} -c #{config} |awk '{ print $2 }'`
+    chef_server_url = `grep chef_server_url #{config} |awk '{ print $2 }'`
+    colored_cookbook_version = "#{cookbook_version}".colorize(:green)
+
+    # Print latest cookbook version & Chef server. 
+    puts "Version: #{colored_cookbook_version} Server: #{chef_server_url}  location: #{cookbook_location}"
+
+    knife_config_hosted = `grep cink-hosted /etc/chef/chefknife |awk -F "~~" '{ print $2 }'`
+    knife_config_chef02 = `grep staging /etc/chef/chefknife |awk -F "~~" '{ print $2 }'`
+    puts "hosted config: #{knife_config_hosted}"
+    puts "chef02 config: #{knife_config_chef02}"
+    cookbook_version_chef02 = `knife cookbook show #{ARGV[1]} -c #{knife_config_chef02}`
+    cookbook_version_chef02.delete! 'chefknife'
+    new_cookbook_version_chef02 = ""
+    new_cookbook_version_chef02 = /\d+\.\d+\.\d+/.match("#{cookbook_version_chef02}")
+    final_cookbook_version_chef02 = new_cookbook_version_chef02.to_s
+
+    cookbook_version_hosted = `knife cookbook show #{ARGV[1]} -c #{knife_config_hosted}`
+    cookbook_version_hosted.delete! 'chefknife'
+    new_cookbook_version_hosted = ""
+    new_cookbook_version_hosted = /\d+\.\d+\.\d+/.match("#{cookbook_version_hosted}")
+    final_cookbook_version_hosted = new_cookbook_version_hosted.to_s
+    colored_var = "Don't" 
+    
+
+  end
+
+    if /\d+\.\d+\.\d+/.match("#{final_cookbook_version_chef02}") === /\d+\.\d+\.\d+/.match("#{final_cookbook_version_hosted}") then
+      puts "Cookbook versions match!"
+    else
+      puts "Cookbook versions" + " Don't".colorize(:red) + " match! Did someone forget to promote? \u{1F440}"
+    end
 
 else
   puts opt_parser

@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.29
+------
+- Add compareckbk option which compares cookbook versions.
+
 0.1.28
 ------
 - Update chefknife show $cookbook to show latest community cookbook version.
