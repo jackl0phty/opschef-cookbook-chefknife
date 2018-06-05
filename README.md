@@ -8,7 +8,15 @@ Chefknife is a Ruby command-line utility to help manage multiple Chef servers an
 Requirements
 ------------
 
-A recent copy of Ruby. Tested with 1.9.3.
+A fairly recent copy of Ruby. Confirmed working on 2.1.2p95 & 2.3.0p0.
+
+Required Ruby Gems
+------------------
+require 'faraday'
+require 'faraday_middleware'
+require 'open3'
+require 'colorize'
+require 'artii'
 
 Attributes
 ----------
@@ -119,6 +127,30 @@ from a single Chef server:
 <pre><code>
 jenkins@jenkins.example.com: ~/chef-hosted: chefknife dump_nodes json /tmp/nodes
 </pre></code>
+
+The following command will do a cookbook "audit" and print version, Chef server, location according to Berksfile, and will determine is versions match between all Chef servers given a cookbook name.
+<pre><code>
+04863-macbook-pro-2:chef-hosted ghevener$ chefknife compareckbk awesome 
+Auditing Chef cookbook awesome on ALL Chef servers...
++--------------------------------------------------------------------------------------------------+
+| Version: 0.2.8
+
+| Server: 'https://api.opscode.com/organizations/jedis'
+
+| location: 'cookbooks/awesome'
+
++--------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| Version: 0.2.5
+
+| Server: 'https://chef01.example.com:443/organizations/jedis'
+
+| location: 'cookbooks/awesome'
+
++--------------------------------------------------------------------------------------------------+
+Cookbook versions Don't match for awesome! Did someone forget to promote? 👀
+</pre></code>
+
 
 You should override the default['chefknife']['knife_configs'] = [] attribute with a list of knife configs for all your chef servers,
 including [Enterprise Chef](http://www.opscode.com/enterprise-chef/) if you're using it.
