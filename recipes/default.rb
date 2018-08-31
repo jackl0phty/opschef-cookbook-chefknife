@@ -5,6 +5,13 @@
 # Copyright 2013, Gerald L. Hevener Jr., M.S.
 #
 
+# Install required Ruby gems system wide.
+%w{ faraday faraday_middleware colorize artii }.each do |gempkg|
+  gem_package gempkg do
+    action :install
+  end
+end
+
 # Deploy the chefknife Ruby script.
 template "/usr/local/bin/chefknife" do
   source "chefknife.erb"

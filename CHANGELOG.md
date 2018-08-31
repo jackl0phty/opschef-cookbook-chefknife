@@ -3,6 +3,10 @@ chefknife CHANGELOG
 
 This file is used to list changes made in each version of the chefknife cookbook.
 
+0.1.31
+------
+- Install missing Ruby gems.
+
 0.1.29
 ------
 - Add compareckbk option which compares cookbook versions.
